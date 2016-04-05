@@ -45,5 +45,10 @@
 - name: create symlink for binary
   file: state=link src=/usr/local/openresty/nginx/sbin/nginx dest=/usr/sbin/nginx
 
+- name: Install nginx extras
+  apt: name="{{ item }}" state=present force=yes
+  with_items:
+  - nginx-extras
+
 - name: start nginx service
   service: name=nginx state=started
