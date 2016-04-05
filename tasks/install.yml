@@ -1,22 +1,19 @@
 ---
 - name: download openresty
-  get_url: url=http://openresty.org/download/ngx_openresty-{{ openresty_version }}.tar.gz
-           dest=/root/ngx_openresty-{{ openresty_version }}.tar.gz
+  get_url: url=https://openresty.org/download/openresty-{{ openresty_version }}.tar.gz
+           dest=/root/openresty-{{ openresty_version }}.tar.gz
 
 - name: Unarchive openresty
-  unarchive: src=/root/ngx_openresty-{{ openresty_version }}.tar.gz
+  unarchive: src=/root/openresty-{{ openresty_version }}.tar.gz
              dest=/root
              copy=no
 
 - name: Install openresty
-  command: "{{ item }} chdir=/root/ngx_openresty-{{ openresty_version }}"
+  command: "{{ item }} chdir=/root/openresty-{{ openresty_version }}"
   with_items:
     - ./configure --with-http_realip_module --with-http_addition_module --with-http_xslt_module --with-http_image_filter_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_gzip_static_module --with-http_auth_request_module --with-http_random_index_module --with-http_secure_link_module --with-http_degradation_module --with-http_stub_status_module
     - make -j{{ ansible_processor_cores }}
-    - checkinstall -D --pkgname ngx-openresty --pakdir ./ --pkgversion {{ openresty_version }} -y
-    #- checkinstall -D -y
-#     # - make install
-# dpkg -i --force-all if override failed
+    - checkinstall -D --pkgname openresty --pakdir ./ --pkgversion {{ openresty_version }} -y
 
 - name: remove build files
   file: path={{ item }}
